@@ -8,11 +8,11 @@ icon: "sparkles"
 
 To create a table instance, use the `useAutoTable` function from `@ianord/table` package. The `useAutoTable` function accepts two arguments:
 
-<ResponseField name="data" type="any[]" required>
+<ResponseField name="data" type="T[]" required>
   Data to be displayed in the table. This is an array of objects.
 </ResponseField>
 <ResponseField name="config" type="ATConfig<T>">
-  The table configuration object. See the [Configuration](/configuration) guide for more details.
+  The table configuration object. See the [configuration](/configuration) guide for more details.
 </ResponseField>
 
 ```tsx app/page.tsx
@@ -42,11 +42,12 @@ To render the table, use the `AutoTable` component from `@ianord/table` package.
 ### Full code
 
 ```tsx app/page.tsx
-import { useAutoTable, AutoTable } from "@zodaf/react";
+import { useAutoTable, AutoTable } from "@ianord/table";
 
 export default function Page() {
-	const data = await fetch("...");
+	const { data, loading } = await useQuery("...");
 	const config = {
+		loading,
 		actions: {
 			onClick: (action, row) => {
 				console.log(action, row);
