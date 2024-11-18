@@ -1,0 +1,58 @@
+---
+title: "Basic Usage"
+description: "Learn how to use basic zodaf auto-form features"
+icon: "sparkles"
+---
+
+### Create form instance
+
+To create a form instance, use the `useAutoForm` function from `@zodaf/react` package. The `createForm` function accepts two arguments:
+
+1. `schema`: A zod schema object that defines the form fields and validation rules.
+2. `config`: An object that defines the form configuration. This is optional.
+
+```tsx app/page.tsx
+const schema = z.object({
+	name: z.string().describe("Your full name"),
+	email: z.string().email().describe("Your email address"),
+	age: z.number().int().min(18).describe("Your age"),
+});
+
+const form = useAutoForm(schema);
+```
+
+### Rendering form
+
+To render the form, use the `AutoForm` component from `@zodaf/react` package. The `AutoForm` component accepts the form instance as a prop.
+
+```tsx app/page.tsx
+<AutoForm form={form} />
+```
+
+### Full code
+
+```tsx app/page.tsx
+import { z } from "zod";
+import { useAutoForm, AutoForm } from "@zodaf/react";
+
+const schema = z.object({
+	name: z.string().describe("Your full name"),
+	email: z.string().email().describe("Your email address"),
+	age: z.number().int().min(18).describe("Your age"),
+});
+
+export default function Page() {
+	const form = useAutoForm(schema);
+	return <AutoForm form={form} />;
+}
+```
+
+### Result
+
+<img
+	src="/images/basic-usage.png"
+	alt="image"
+	border="0"
+	width={"100%"}
+	className="rounded-xl"
+/>
