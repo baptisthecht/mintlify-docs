@@ -1,65 +1,61 @@
 {
-	"$schema": "https://mintlify.com/schema.json",
-	"name": "Zodaf",
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "@ianord/table",
 
-	"favicon": "/favicon.svg",
-	"colors": {
-		"primary": "#0D9373",
-		"light": "#07C983",
-		"dark": "#0D9373",
-		"anchors": {
-			"from": "#0D9373",
-			"to": "#07C983"
-		}
-	},
-	"topbarLinks": [
-		{
-			"name": "Contact",
-			"url": "mailto:me@baptisthecht.fr"
-		}
-	],
-	"topbarCtaButton": {
-		"name": "GitHub",
-		"url": "https://github.com/baptisthecht/zodaf-react"
-	},
-	"tabs": [
-		{
-			"name": "API Reference",
-			"url": "api-reference"
-		}
-	],
-	"anchors": [
-		{
-			"name": "Documentation",
-			"icon": "book-open-cover",
-			"url": "https://zodaf.mintlify.app/"
-		},
-		{
-			"name": "GitHub",
-			"icon": "github",
-			"url": "https://github.com/baptisthecht/zodaf-react"
-		}
-	],
-	"navigation": [
-		{
-			"group": "Get Started",
-			"pages": ["installation"]
-		},
-		{
-			"group": "Usage",
-			"pages": ["usage/basic-usage", "usage/complete-usage"]
-		},
-		{
-			"group": "Configuration",
-			"pages": [
-				"configuration/configuration",
-				"configuration/custom-components",
-				"configuration/add-components"
-			]
-		}
-	],
-	"footerSocials": {
-		"github": "https://github.com/baptisthecht",
-		"linkedin": "https://www.linkedin.com/in/baptist-hecht-b757181b4"
-	}
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373",
+    "anchors": {
+      "from": "#0D9373",
+      "to": "#07C983"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Contact",
+      "url": "mailto:me@baptisthecht.fr"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "GitHub",
+    "url": "https://sources.ianord.fr/baptisthecht/ianord-table"
+  },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "Documentation",
+      "icon": "book-open-cover",
+      "url": "https://zodaf.mintlify.app/"
+    },
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/baptisthecht/zodaf-react"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": ["introduction", "installation"]
+    },
+    {
+      "group": "Usage",
+      "pages": ["usage/basic-usage", "usage/complete-usage"]
+    },
+    {
+      "group": "Configuration",
+      "pages": ["configuration/configuration", "configuration/custom-components", "configuration/add-components"]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/baptisthecht",
+    "linkedin": "https://www.linkedin.com/in/baptist-hecht-b757181b4"
+  }
 }
