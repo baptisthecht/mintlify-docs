@@ -16,8 +16,9 @@ To create a table instance, use the `useAutoTable` function from `@ianord/table`
 </ResponseField>
 
 ```tsx app/page.tsx
-const data = await fetch("...");
+const { data, loading } = await useQuery("...");
 const config = {
+	loading,
 	actions: {
 		onClick: (action, row) => {
 			console.log(action, row);
