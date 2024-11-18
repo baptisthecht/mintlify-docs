@@ -1,0 +1,154 @@
+---
+title: "Configuration"
+description: "Learn how to use all @ianord/table features for more advanced use cases"
+icon: "gears"
+---
+
+## Introduction
+
+### Create table instance
+
+For this tutorial, we will start from a basic table example, to learn how to create a basic table, please refer to the [Basic Usage](/usage/basic-usage) guide.
+Let's admit we have a table instance created as follows:
+
+<CodeGroup>
+
+```tsx App.tsx
+import { AutoTable, useAutoTable } from "@ianord/table";
+import "@ianord/table/styles.css";
+import { data } from "./data";
+
+function App() {
+  const instance = useAutoTable(data);
+  return <AutoTable instance={instance} />;
+}
+
+export default App;
+```
+
+```tsx data.ts
+export type DataType = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  status: "validated" | "rejected";
+};
+
+export const data: DataType[] = [
+  {
+    id: 1,
+    name: "Emma Moreau",
+    email: "emma.moreau@example.com",
+    phone: "+33109714995",
+    status: "rejected",
+  },
+  // ...
+];
+```
+
+</CodeGroup>
+
+This will render a table with the default configuration.
+
+<img src="/images/default-config.png" alt="image" border="0" width={"100%"} className="rounded-xl" />
+Now, let's see how to customize the table configuration.
+
+## Configuration
+
+### Customizing table
+
+You can easily customize table by passing a `config` object to the `useAutoTable` function. The `config` can take the following properties:
+
+<ResponseField name="fieldsConfig" type="Record<keyof schema, ZodafFieldConfig>">
+Object that defines the form fields configuration. The key is the field name and the value is a `ZodafFieldConfig` object.
+
+Example:
+
+```jsx
+const fieldsConfig = {
+  name: {
+    label: "Your full name",
+    placeholder: "John Doe",
+  },
+  email: {
+    description: "Your email must be unique",
+    fieldType: "email-with-auto-complete",
+  },
+  age: {
+    label: "Age",
+    placeholder: "Enter your age",
+    disabled: true,
+    props: {
+      className: "bg-gray-100",
+    },
+  },
+};
+const form = useAutoForm(schema, { fieldsConfig });
+```
+
+See the [configuration](/configuration/configuration) section for more details.
+
+</ResponseField>
+
+### Handling form events
+
+<ResponseField name="onSubmit" type="Function">
+	Function that is called when the form is submitted. The function receives
+	the type-safe form data as an argument.
+
+Example:
+
+```jsx
+const onSubmit = (data) => {
+  console.log(data);
+};
+
+const form = useAutoForm(schema, { onSubmit });
+```
+
+</ResponseField>
+
+<ResponseField name="onChange" type="Function">
+	Function that is called when the form has changes. The function receives
+	the type-safe form data as an argument.
+
+Example:
+
+```jsx
+const onChange = (data) => {
+  console.log(data);
+};
+
+const form = useAutoForm(schema, { onChange });
+```
+
+</ResponseField>
+
+<ResponseField name="submitLabel" type="string">
+	Label for the submit button.
+
+Example:
+
+```jsx
+const form = useAutoForm(schema, { submitLabel: "Save" });
+```
+
+**Note**: Ensure that the submitLabel is used with a submit component that
+supports a children prop.
+
+</ResponseField>
+
+<ResponseField name="submitHidden" type="boolean" >
+	Hide the submit button.
+	Defaults to `false`.
+
+Example:
+
+```jsx
+const form = useAutoForm(schema, { submitHidden: true });
+```
+
+> Component will render without a submit button.
+
+</ResponseField>
