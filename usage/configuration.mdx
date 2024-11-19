@@ -51,7 +51,7 @@ export const data: DataType[] = [
 
 This will render a table with the default configuration.
 
-<img src="/images/default-config.png" alt="image" border="0" width={"100%"} className="rounded-xl" />
+<img className="rounded-xl" src="/images/basic-usage.png" alt="Basic Usage" />
 Now, let's see how to customize the table configuration.
 
 ## Configuration
@@ -60,95 +60,37 @@ Now, let's see how to customize the table configuration.
 
 You can easily customize table by passing a `config` object to the `useAutoTable` function. The `config` can take the following properties:
 
-<ResponseField name="fieldsConfig" type="Record<keyof schema, ZodafFieldConfig>">
-Object that defines the form fields configuration. The key is the field name and the value is a `ZodafFieldConfig` object.
+#### Columns configuration
+
+You can customize the columns by passing a `columns` record to the `config` object. Each column object can take the following properties:
+
+{/* {/_ label?: string,
+isSortable?: boolean
+isSearchable?: boolean
+transformValue?: (value: string) => string
+transformComponent?: ({value}: {value: string}) => JSX.Element
+filters?: FilterOption[]
+filterFn?: FilterFnOption<T>,
+hidden?: boolean _/} */}
+
+<ResponseField name="label" type="string">
+This is the label of the column. It will be displayed in the table header.
 
 Example:
 
-```jsx
-const fieldsConfig = {
-  name: {
-    label: "Your full name",
-    placeholder: "John Doe",
-  },
-  email: {
-    description: "Your email must be unique",
-    fieldType: "email-with-auto-complete",
-  },
-  age: {
-    label: "Age",
-    placeholder: "Enter your age",
-    disabled: true,
-    props: {
-      className: "bg-gray-100",
+```tsx
+const config = {
+  columns: {
+    name: {
+      label: "Full Name",
     },
   },
 };
-const form = useAutoForm(schema, { fieldsConfig });
 ```
 
-See the [configuration](/configuration/configuration) section for more details.
+Will display "Full Name" in the table header instead of "name".
+Render :
 
+<img className="rounded-xl" src="/images/column-label.png" alt="Basic Usage" />
 </ResponseField>
 
-### Handling form events
-
-<ResponseField name="onSubmit" type="Function">
-	Function that is called when the form is submitted. The function receives
-	the type-safe form data as an argument.
-
-Example:
-
-```jsx
-const onSubmit = (data) => {
-  console.log(data);
-};
-
-const form = useAutoForm(schema, { onSubmit });
-```
-
-</ResponseField>
-
-<ResponseField name="onChange" type="Function">
-	Function that is called when the form has changes. The function receives
-	the type-safe form data as an argument.
-
-Example:
-
-```jsx
-const onChange = (data) => {
-  console.log(data);
-};
-
-const form = useAutoForm(schema, { onChange });
-```
-
-</ResponseField>
-
-<ResponseField name="submitLabel" type="string">
-	Label for the submit button.
-
-Example:
-
-```jsx
-const form = useAutoForm(schema, { submitLabel: "Save" });
-```
-
-**Note**: Ensure that the submitLabel is used with a submit component that
-supports a children prop.
-
-</ResponseField>
-
-<ResponseField name="submitHidden" type="boolean" >
-	Hide the submit button.
-	Defaults to `false`.
-
-Example:
-
-```jsx
-const form = useAutoForm(schema, { submitHidden: true });
-```
-
-> Component will render without a submit button.
-
-</ResponseField>
