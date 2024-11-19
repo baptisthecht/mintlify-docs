@@ -42,10 +42,6 @@
     {
       "group": "Usage",
       "pages": ["usage/basic-usage", "usage/configuration"]
-    },
-    {
-      "group": "Configuration",
-      "pages": ["configuration/configuration", "configuration/custom-components", "configuration/add-components"]
     }
   ],
   "footerSocials": {
