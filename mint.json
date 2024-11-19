@@ -47,7 +47,7 @@
     },
     {
       "group": "Usage",
-      "pages": ["usage/basic-usage", "usage/complete-usage"]
+      "pages": ["usage/basic-usage", "usage/configuration"]
     },
     {
       "group": "Configuration",
