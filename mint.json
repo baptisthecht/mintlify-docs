@@ -22,12 +22,6 @@
     "name": "GitHub",
     "url": "https://sources.ianord.fr/baptisthecht/ianord-table"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
   "anchors": [
     {
       "name": "Documentation",
