@@ -79,7 +79,7 @@ This is the label of the column. It will be displayed in the table header.
 Example:
 
 ```tsx
-const config = {
+const config: ATConfig<DataType> = {
   columns: {
     name: {
       label: "Full Name",
@@ -94,3 +94,92 @@ Render :
 <img className="rounded-xl" src="/images/column-label.png" alt="Basic Usage" />
 </ResponseField>
 
+<ResponseField name="hidden" type="boolean">
+This is a boolean value that indicates if the column should be hidden or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    id: {
+      hidden: true,
+    },
+  },
+};
+```
+
+Will hide the "id" column.
+Render :
+
+<img className="rounded-xl" src="/images/column-hidden.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="isSortable" type="boolean">
+This is a boolean value that indicates if the column can be sorted or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    name: {
+      isSortable: true,
+    },
+  },
+};
+```
+
+This will allow the user to sort the table by the "name" column, adding arrow icons to the header.
+Click on the header to sort the table by the "name" column.
+Render :
+
+<img className="rounded-xl" src="/images/column-isSortable.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="isSearchable" type="boolean">
+This is a boolean value that indicates if the user can search in the column or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    name: {
+      isSearchable: true,
+    },
+  },
+};
+```
+
+Having isSearchable value in at least one column will display a search input above the table.
+The user can search on multiple columns by typing in the search input.
+Render :
+
+<img className="rounded-xl" src="/images/column-isSearchable.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="filters" type="FilerOption[]">
+This is an array of filter options that will be displayed in the filter dropdown.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      filters: [
+        { label: "All", value: "" },
+        { label: "Validated", value: "validated" },
+        { label: "Rejected", value: "rejected" },
+      ],
+    },
+  },
+};
+```
+
+Having filters in a column will automatically display a filter dropdown in the column header.
+Render :
+
+<img className="rounded-xl" src="/images/column-filters.png" alt="Basic Usage" />
+</ResponseField>
