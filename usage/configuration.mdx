@@ -183,3 +183,47 @@ Render :
 
 <img className="rounded-xl" src="/images/column-filters.png" alt="Basic Usage" />
 </ResponseField>
+
+<ResponseField name="transformValue" type="transformValueFunction">
+This is a function that takes a string as a parameter and returns a string. It will be used to transform the value of the column.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    phone: {
+      transformValue: (value) => value.replace('+33', '0');
+    },
+  },
+};
+```
+
+This will replace "+33" by "0" in the "phone" column.
+Render :
+
+<img className="rounded-xl" src="/images/column-transformValue.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="transformComponent" type="transformComponentFunction">
+This is a function that takes a value as a parameter and returns a JSX element. It will be used to transform the value of the column.
+
+`@ianord/table` provides a set of built-in components that you can use to transform the value of the column. You can also create your own components and use them to transform the value of the column.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      transformComponent: transformComponents.REGISTRATION_STATUS,
+    },
+  },
+};
+```
+
+This will use the built-in `REGISTRATION_STATUS` component to transform the value of the "status" column.
+Render :
+
+<img className="rounded-xl" src="/images/column-transformComponent.png" alt="Basic Usage" />
+</ResponseField>
