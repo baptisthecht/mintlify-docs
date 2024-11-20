@@ -19,19 +19,19 @@
     }
   ],
   "topbarCtaButton": {
-    "name": "GitHub",
-    "url": "https://sources.ianord.fr/baptisthecht/ianord-table"
+    "name": "Gitea",
+    "url": "https://sources.ianord.fr/baptist.hecht/table"
   },
   "anchors": [
     {
       "name": "Documentation",
       "icon": "book-open-cover",
-      "url": "https://zodaf.mintlify.app/"
+      "url": "https://baptisthecht.mintlify.app/"
     },
     {
-      "name": "GitHub",
+      "name": "Gitea",
       "icon": "github",
-      "url": "https://github.com/baptisthecht/zodaf-react"
+      "url": "https://sources.ianord.fr/baptist.hecht/table"
     }
   ],
   "navigation": [
