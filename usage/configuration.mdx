@@ -536,24 +536,6 @@ Render :
 
 </ResponseField>
 
-<ResponseField name="grid" type="boolean">
-
-This is optional and allows you to order filter section as a grid automatically
-
-```tsx
-const config: ATConfig<DataType> = {
-  filtering: {
-   grid: true
-  },
-};
-```
-
-Render :
-
-<img className="rounded-xl" src="/images/filtering-grid.png" alt="Basic Usage" />
-
-</ResponseField>
-
 <ResponseField name="dateRangePicker" type="boolean">
 
 This allows you to add a date-range picker to filter section, there is other options to customize the date range picker : 
@@ -664,23 +646,69 @@ Render :
 
 </ResponseField>
 
-#### Handling organization
+#### Handling right-click
 
-You can handle the organization choice of the table by passing a `organizationManagement` booleaan to true into the `config` object.
+You can handle right click on rows with the `contextMenu` record.
+The contextMenu record can contains multiple fields :
 
-<ResponseField name="organizationManagement" type="boolean">
+<ResponseField name="items" type="ATContextMenuItem[]">
 
-This will enable a search and select input to choose the organization of the table.
+This is an array with items to display in the context menu
 
 Example:
 
 ```tsx
 const config: ATConfig<DataType> = {
-  organizationManagement: true,
+  contextMenu: {
+    items: [
+      {
+        label: "Copier le nom",
+        onClick(row) {
+          navigator.clipboard.writeText(row.name);
+        },
+        icon: CopyPlus,
+      }
+    ]
+  }
 };
 ```
 
-Thisi will automatically require the `organizationConfig` object to be passed to the config object.
+This will render contextMenu when right-clicking a row
+
+Render : 
+
+<img className="rounded-xl" src="/images/context-menu.png" alt="Context Menu" />
+
+</ResponseField>
+
+<ResponseField name="dots" type="boolean">
+
+This is a boolean that shows 3 dots at row ending
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  contextMenu: {
+    dots: true,
+    items: [
+      {
+        label: "Copier le nom",
+        onClick(row) {
+          navigator.clipboard.writeText(row.name);
+        },
+        icon: CopyPlus,
+      }
+    ]
+  }
+};
+```
+
+This will render 3 dots at row ending
+
+Render : 
+
+<img className="rounded-xl" src="/images/context-dots.png" alt="Context Menu" />
 
 </ResponseField>
 
@@ -711,6 +739,256 @@ Render :
 
 <img className="rounded-xl" src="/images/organization.png" alt="Basic Usage" />
 
+</ResponseField>
+
+
+#### Handling organization
+
+You can handle the organization choice of the table by passing a `organizationManagement` booleaan to true into the `config` object.
+
+<ResponseField name="organizationManagement" type="boolean">
+
+This will enable a search and select input to choose the organization of the table.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  organizationManagement: true,
+};
+```
+
+This will automatically require the `organizationConfig` object to be passed to the config object.
+
+</ResponseField>
+
+#### Handling selection
+
+You can handle selection by adding a `selection` record to the config object. It can takes the following properties:
+
+<ResponseField name="selectionType" type='"single" | "multiple" | "none"'>
+
+Defaults to `none`
+
+This will enable a checkbox at the beginning of each row to select rows.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  selection: {
+    selectionType: "multiple",
+  },
+};
+```
+Render : 
+
+<img className="rounded-xl" src="/images/selection.png" alt="Context Menu" />
+
+</ResponseField>
+
+<ResponseField name="onSelectionChange" type='({ selection }) => void'>
+
+This is a function that will be called when the selection changes.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  selection: {
+    onSelectionChange: ({ selection }) => console.log(selection)
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="resetOnDataChange" type='boolean'>
+
+Defaults to `false`
+
+If set to `true`, the selection will be reset when the data changes.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  selection: {
+    resetOnDataChange: true,
+  },
+};
+```
+</ResponseField>
+
+#### Handling some other cases
+
+You can handle some other cases by adding a `metaData` record to the config object. It can takes the following properties:
+
+<ResponseField name="disabledFn" type='({ filters, row }) => boolean'>
+
+This is a function that will be called to determine if a row is disabled.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="isDisabledDots" type='boolean'>
+
+Defaults to `false`
+
+This is a boolean that indicates if 3 dots must be displayed at the end of each disabled row.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+    isDisabledDots: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="isDisabledRightClickable" type='boolean'>
+
+Defaults to `false`
+
+This is a boolean that indicates if the context menu must be displayed when right-clicking a disabled row.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+    isDisabledRightClickable: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="isDisabledSelectable" type='boolean'>
+
+Defaults to `false`
+
+This is a boolean that indicates if a disabled row can be selected.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+    isDisabledSelectable: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="selectRowOnClick" type='boolean'>
+
+Defaults to `false`
+
+Only available when `selectionType` is set. This is a boolean that indicates if a row can be selected when clicking on it.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+    selectRowOnClick: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="selectOnlyOneRowOnClick" type='boolean'>
+
+Defaults to `false`
+
+Only available when `selectRowOnClick` is set. This is a boolean that indicates if only one row can be selected when clicking on it.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+    selectRowOnClick: true,
+    selectOnlyOneRowOnClick: true, // Only one row can be selected when clicking on it, for multiple selection, you must aim the checkbox
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="searchBarPosition" type='"left" | "right"'>
+
+Defaults to `left`
+
+This is a string that indicates where the search bar should be displayed.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    searchBarPosition: "right",
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="searchBarClassName" type='string'>
+
+This is a string that indicates the className of the search bar.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    searchBarClassName: "w-full",
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="organizationSASClassName" type='string'>
+
+This is a string that indicates the className of the organization search-and-select component.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    organizationSASClassName: "w-full",
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="rowParent" type='ReactNode'>
+
+This is a component that will be displayed around each row.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    rowParent: ({ children }) => <div className="flex items-center">{children}</div>,
+  },
+};
+```
 </ResponseField>
 
 Some other features will be available in future releases, stay tuned!
