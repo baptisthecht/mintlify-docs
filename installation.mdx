@@ -4,11 +4,11 @@ description: "Learn how to setup @ianord/table on your project"
 icon: "rocket"
 ---
 
-<Info>**Prerequisite**: You must have a React project initialized.</Info>
+<Note>**Prerequisite**: You must have a React project initialized.</Note>
 
-Step 1. Install @ianord/table on your project:
-
-<CodeGroup>
+<Steps>
+  <Step title="Install @ianord/table on your project">
+    <CodeGroup>
 
 ```bash npm
 npm i @ianord/table --registry=https://npm.ianord.fr/
@@ -23,8 +23,19 @@ yarn add @ianord/table --registry=https://npm.ianord.fr/
 ```
 
 </CodeGroup>
+  </Step>
+  <Step title='Import the styles.css file at the root of your project'>
+   ```typescript App.tsx
+import "@ianord/table/styles.css";
+```
+  </Step>
+  <Step title="Enjoy with @ianord/table">
+   Your project can now use `@ianord/table`.
+  </Step>
+</Steps>
 
-If you dont want to specify the registry at each update, you can just create a `.npmrc` file :
+<Note>If you dont want to specify the registry at each update, you can just create a `.npmrc` file :</Note>
+
 
 ```dockerfile .npmrc
 registry=https://npm.ianord.fr/
@@ -65,11 +76,3 @@ yarn update @ianord/table
 ```
 
 </CodeGroup>
-
-Step 2. Import the styles.css file at the root of your project
-
-```typescript App.tsx
-import "@ianord/table/styles.css";
-```
-
-Your project can now use `@ianord/table`.

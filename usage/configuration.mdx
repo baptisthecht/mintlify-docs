@@ -231,6 +231,96 @@ Render :
 <img className="rounded-xl" src="/images/column-transformComponent.png" alt="Basic Usage" />
 </ResponseField>
 
+<ResponseField name="defaultFilterValue" type="string | string[]">
+This is a `string` or an array of `string` that will be used as the default filter value for the column.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      defaultFilterValue: "validated",
+    },
+  },
+};
+```
+In this example, the `status` column will be filtered by default with the value `validated`.
+</ResponseField>
+
+<ResponseField name="filterClassName" type="string">
+This is a `string` that will be used as the className for the filter component.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      filterClassName: "w-full"
+    },
+  },
+};
+```
+In this example, the `status` filter will have a `w-full` className for the filter component.
+</ResponseField>
+
+<ResponseField name="filterFn" type="FilterFnOption<DataType>">
+This is a filter function that will be used to filter in the column, `@ianord/table` provides default, but you can specify your own.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    age: {
+      filterFn: "inNumberRange"
+    },
+  },
+};
+```
+In this example, the `age` filter will use the "inNumberRange" filter function. 
+</ResponseField>
+
+<ResponseField name="filterInPopover" type="boolean">
+This is a `boolean` value that indicates if the filter should be displayed in a popover or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      filterInPopover: true
+    },
+  },
+};
+```
+Result : 
+
+<img className="rounded-xl" src="/images/filterInPopover.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="filterInPopover" type="boolean">
+This is a `boolean` value that indicates if the filter should be displayed in a popover or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      filterInPopover: true
+    },
+  },
+};
+```
+Result : 
+
+<img className="rounded-xl" src="/images/filterInPopover.png" alt="Basic Usage" />
+</ResponseField>
+
+
 #### Pagination configuration
 
 You can customize the pagination by passing a `pagination` object to the `config` object. Pagination object can take the following properties:
@@ -275,7 +365,7 @@ Render :
 
 #### Handling actions
 
-You can customize the columns by passing a `columns` record to the `config` object. Each column object can take the following properties:
+You can customize the columns by passing a `actions` record to the `config` object. It contains the following properties:
 
 <ResponseField name="onClickRow" type="ClickRowFunction">
 This is a function that takes a `row` as a parameter and returns `void`. It will be called when the user clicks on a row.
