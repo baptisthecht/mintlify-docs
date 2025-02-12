@@ -363,6 +363,19 @@ Render :
 <img className="rounded-xl" src="/images/pagination-rowsPerPage.png" alt="Basic Usage" />
 </ResponseField>
 
+<ResponseField name="autoUpdateDeps" type='any[]'>
+This is an array of dependencies that will be used to trigger the table size update. By default, the table size will be updated when the `data` or `config` props change.
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+    autoUpdateDeps: [someDynamicData]
+  },
+};
+```
+
+</ResponseField>
+
 #### Handling actions
 
 You can customize the columns by passing a `actions` record to the `config` object. It contains the following properties:
@@ -448,6 +461,126 @@ const config: ATConfig<DataType> = {
 Render :
 
 <img className="rounded-xl" src="/images/filtering-reset.png" alt="Basic Usage" />
+
+</ResponseField>
+
+<ResponseField name="resetOrganizationOnReset" type="boolean">
+
+This is optional and defaults to `false`. It will reset the `organization` select when triggering the resetFiltersButton 
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+    resetOrganizationOnReset: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="padding" type="boolean">
+
+This is optional and defaults to `false`. It will add a 16px padding on filter group
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+    padding: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="externalFilters" type="ATExternalFilter[]">
+
+This is optional and allows you to add filters with external management, the filter will appear as an internal filter of `@ianord/table`
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+    externalFilters: [
+      {
+        label: "Vague",
+        options: vagues.map(vague => ({ label: vague, value: vague })),
+        value: activeVague,
+        onValueChange: setActiveVague,
+      }
+    ]
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/externalFilter.png" alt="Basic Usage" />
+
+</ResponseField>
+
+<ResponseField name="grid" type="boolean">
+
+This is optional and allows you to order filter section as a grid automatically
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+   grid: true
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/filtering-grid.png" alt="Basic Usage" />
+
+</ResponseField>
+
+<ResponseField name="grid" type="boolean">
+
+This is optional and allows you to order filter section as a grid automatically
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+   grid: true
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/filtering-grid.png" alt="Basic Usage" />
+
+</ResponseField>
+
+<ResponseField name="dateRangePicker" type="boolean">
+
+This allows you to add a date-range picker to filter section, there is other options to customize the date range picker : 
+- `dateRangePickerPopoverAlign`
+- `dateRangePickerPopoverSide`
+- `defaultDateRange`
+- `onDateRangeChange`
+
+Exemple : 
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+   dateRangePicker: true,
+   dateRangePickerPopoverAlign: "center",
+   dateRangePickerPopoverSide: "bottom",
+   defaultDateRange: {
+    from: new Date(),
+    to: new Date().addYear(1)
+   },
+   onDateRangeChange: ({from, to}) => fetchDataWithRange(from, to)
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/filtering-grid.png" alt="Basic Usage" />
 
 </ResponseField>
 
