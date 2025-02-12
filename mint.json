@@ -42,6 +42,9 @@
     {
       "group": "Usage",
       "pages": ["usage/basic-usage", "usage/configuration"]
+    }, {
+      "group": "Reference",
+      "pages": ["reference/api-reference"]
     }
   ],
   "footerSocials": {

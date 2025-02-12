@@ -1,0 +1,995 @@
+---
+title: "API Reference"
+description: "See all types of @ianord/table"
+icon: "sparkles"
+---
+
+
+## Introduction
+
+### Create table instance
+
+For this tutorial, we will start from a basic table example, to learn how to create a basic table, please refer to the [Basic Usage](/usage/basic-usage) guide.
+Let's admit we have a table instance created as follows:
+
+<CodeGroup>
+
+```tsx App.tsx
+import { AutoTable, useAutoTable } from "@ianord/table";
+import "@ianord/table/styles.css";
+import { data } from "./data";
+
+function App() {
+  const instance = useAutoTable(data);
+  return <AutoTable instance={instance} />;
+}
+
+export default App;
+```
+
+```tsx data.ts
+export type DataType = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  status: "validated" | "rejected";
+};
+
+export const data: DataType[] = [
+  {
+    id: 1,
+    name: "Emma Moreau",
+    email: "emma.moreau@example.com",
+    phone: "+33109714995",
+    status: "rejected",
+  },
+  // ...
+];
+```
+
+</CodeGroup>
+
+This will render a table with the default configuration.
+
+<img className="rounded-xl" src="/images/basic-usage.png" alt="Basic Usage" />
+Now, let's see how to customize the table configuration.
+
+## Configuration
+
+### Customizing table
+
+You can easily customize table by passing a `config` object to the `useAutoTable` function. The `config` can take the following properties:
+
+#### Columns configuration
+
+You can customize the columns by passing a `columns` record to the `config` object. Each column object can take the following properties:
+
+<ResponseField name="label" type="string">
+This is the label of the column. It will be displayed in the table header.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    name: {
+      label: "Full Name",
+    },
+  },
+};
+```
+
+Will display `Full Name` in the table header instead of `name`.
+Render :
+
+<img className="rounded-xl" src="/images/column-label.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="hidden" type="boolean">
+This is a `boolean` value that indicates if the column should be hidden or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    id: {
+      hidden: true,
+    },
+  },
+};
+```
+
+Will hide the `id` column.
+Render :
+
+<img className="rounded-xl" src="/images/column-hidden.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="isSortable" type="boolean">
+This is a `boolean` value that indicates if the column can be sorted or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    name: {
+      isSortable: true,
+    },
+  },
+};
+```
+
+This will allow the user to sort the table by the `name` column, adding arrow icons to the header.
+Click on the header to sort the table by the `name` column.
+Render :
+
+<img className="rounded-xl" src="/images/column-isSortable.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="isSearchable" type="boolean">
+This is a `boolean` value that indicates if the user can search in the column or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    name: {
+      isSearchable: true,
+    },
+  },
+};
+```
+
+Having `isSearchable` value in at least one column will display a search input above the table.
+The user can search on multiple columns by typing in the search input.
+Render :
+
+<img className="rounded-xl" src="/images/column-isSearchable.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="filters" type="FilerOption[]">
+This is an `array` of filter options that will be displayed in the filter selet.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      filters: [
+        { label: "All", value: "" },
+        { label: "Validated", value: "validated" },
+        { label: "Rejected", value: "rejected" },
+      ],
+    },
+  },
+};
+```
+
+Having filters in a column will automatically display a filter select in the column header.
+Render :
+
+<img className="rounded-xl" src="/images/column-filters.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="transformValue" type="TransformValueFunction">
+This is a `function` that takes a `string` as a parameter and returns a `string`. It will be used to transform the value of the column.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    phone: {
+      transformValue: (value) => value.replace('+33', '0');
+    },
+  },
+};
+```
+
+This will replace `+33` by `0` in the `phone` column.
+Render :
+
+<img className="rounded-xl" src="/images/column-transformValue.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="transformComponent" type="TransformComponentFunction">
+This is a function that takes a `value` as a parameter and returns a `JSX element`. It will be used to transform the value of the column.
+
+`@ianord/table` provides a set of *built-in components* that you can use to transform the value of the column. You can also create your own components and use them to transform the value of the column.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      transformComponent: transformComponents.REGISTRATION_STATUS,
+    },
+  },
+};
+```
+
+or :
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      transformComponent: (value) => <span className={`badge ${value === "validated" ? "bg-green-500" : "bg-red-500"}`}>{value}</span>,
+    },
+  },
+};
+```
+
+This first example will use the built-in `REGISTRATION_STATUS` component to transform the value of the `status` column.
+Render :
+
+<img className="rounded-xl" src="/images/column-transformComponent.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="defaultFilterValue" type="string | string[]">
+This is a `string` or an array of `string` that will be used as the default filter value for the column.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      defaultFilterValue: "validated",
+    },
+  },
+};
+```
+In this example, the `status` column will be filtered by default with the value `validated`.
+</ResponseField>
+
+<ResponseField name="filterClassName" type="string">
+This is a `string` that will be used as the className for the filter component.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      filterClassName: "w-full"
+    },
+  },
+};
+```
+In this example, the `status` filter will have a `w-full` className for the filter component.
+</ResponseField>
+
+<ResponseField name="filterFn" type="FilterFnOption<DataType>">
+This is a filter function that will be used to filter in the column, `@ianord/table` provides default, but you can specify your own.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    age: {
+      filterFn: "inNumberRange"
+    },
+  },
+};
+```
+In this example, the `age` filter will use the "inNumberRange" filter function. 
+</ResponseField>
+
+<ResponseField name="filterInPopover" type="boolean">
+This is a `boolean` value that indicates if the filter should be displayed in a popover or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      filterInPopover: true
+    },
+  },
+};
+```
+Result : 
+
+<img className="rounded-xl" src="/images/filterInPopover.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="filterInPopover" type="boolean">
+This is a `boolean` value that indicates if the filter should be displayed in a popover or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  columns: {
+    status: {
+      filterInPopover: true
+    },
+  },
+};
+```
+Result : 
+
+<img className="rounded-xl" src="/images/filterInPopover.png" alt="Basic Usage" />
+</ResponseField>
+
+
+#### Pagination configuration
+
+You can customize the pagination by passing a `pagination` object to the `config` object. Pagination object can take the following properties:
+
+<ResponseField name="firstAndLastPageButtons" type="boolean">
+This is a `boolean` value that indicates if the first and last page buttons should be displayed or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  pagination: {
+    firstAndLastPageButtons: true,
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/pagination-true.png" alt="Basic Usage" />
+<img className="rounded-xl" src="/images/pagination-false.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="rowsPerPage" type='number | "auto"'>
+This is a `number` that indicates the number of rows per page. You can also set it to `"auto"` to let the table decide the number of rows per page.
+Defaults to `"auto"`
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  pagination: {
+    rowsPerPage: 4,
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/pagination-rowsPerPage.png" alt="Basic Usage" />
+</ResponseField>
+
+<ResponseField name="autoUpdateDeps" type='any[]'>
+This is an array of dependencies that will be used to trigger the table size update. By default, the table size will be updated when the `data` or `config` props change.
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+    autoUpdateDeps: [someDynamicData]
+  },
+};
+```
+
+</ResponseField>
+
+#### Handling actions
+
+You can customize the columns by passing a `actions` record to the `config` object. It contains the following properties:
+
+<ResponseField name="onClickRow" type="ClickRowFunction">
+This is a function that takes a `row` as a parameter and returns `void`. It will be called when the user clicks on a row.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  actions: {
+    onClickRow: (row) => {
+      // row is automatically typed as DataType
+      console.log(row);
+    },
+  },
+};
+```
+
+</ResponseField>
+
+<ResponseField name="onDoubleClickRow" type="DoubleClickRowFunction">
+This is a function that takes a `row` as a parameter and returns `void`. It will be called when the user double clicks on a row.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  actions: {
+    onClickRow: (row) => {
+      // row is automatically typed as DataType
+      console.log(row);
+    },
+  },
+};
+```
+
+</ResponseField>
+
+#### Handling loading
+
+You can handle the loading state of the table by passing a `loading` boolean to the `config` object.
+
+<ResponseField name="loading" type="boolean">
+
+This is optional and defaults to `false`. It indicates if the table is in a loading state or not.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  loading: true,
+};
+```
+
+This wil render skeleton rows in the table.
+
+Render :
+
+<img className="rounded-xl" src="/images/loading.png" alt="Basic Usage" />
+
+</ResponseField>
+
+#### Filtering configuration
+
+You can configure the filter section by passing a `filtering` object to the `config` object. It can take the following properties:
+
+<ResponseField name="resetFiltersButton" type="boolean">
+
+This is optional and defaults to `false`. It will display a button to reset all filters.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+    resetFiltersButton: true,
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/filtering-reset.png" alt="Basic Usage" />
+
+</ResponseField>
+
+<ResponseField name="resetOrganizationOnReset" type="boolean">
+
+This is optional and defaults to `false`. It will reset the `organization` select when triggering the resetFiltersButton 
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+    resetOrganizationOnReset: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="padding" type="boolean">
+
+This is optional and defaults to `false`. It will add a 16px padding on filter group
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+    padding: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="externalFilters" type="ATExternalFilter[]">
+
+This is optional and allows you to add filters with external management, the filter will appear as an internal filter of `@ianord/table`
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+    externalFilters: [
+      {
+        label: "Vague",
+        options: vagues.map(vague => ({ label: vague, value: vague })),
+        value: activeVague,
+        onValueChange: setActiveVague,
+      }
+    ]
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/externalFilter.png" alt="Basic Usage" />
+
+</ResponseField>
+
+<ResponseField name="grid" type="boolean">
+
+This is optional and allows you to order filter section as a grid automatically
+
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+   grid: true
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/filtering-grid.png" alt="Basic Usage" />
+
+</ResponseField>
+
+<ResponseField name="dateRangePicker" type="boolean">
+
+This allows you to add a date-range picker to filter section, there is other options to customize the date range picker : 
+- `dateRangePickerPopoverAlign`
+- `dateRangePickerPopoverSide`
+- `defaultDateRange`
+- `onDateRangeChange`
+
+Exemple : 
+```tsx
+const config: ATConfig<DataType> = {
+  filtering: {
+   dateRangePicker: true,
+   dateRangePickerPopoverAlign: "center",
+   dateRangePickerPopoverSide: "bottom",
+   defaultDateRange: {
+    from: new Date(),
+    to: new Date().addYear(1)
+   },
+   onDateRangeChange: ({from, to}) => fetchDataWithRange(from, to)
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/date-range-picker.png" alt="Basic Usage" />
+
+</ResponseField>
+
+#### Action buttons
+
+You can add action buttons to the table by passing an `buttons` object to the `config` object. It can take the following properties:
+
+<ResponseField name="buttons" type="ATButton[]">
+
+This is an array of button objects that will be displayed in the table.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  buttons: {
+    buttons: [
+      {
+        label: "Export",
+        onClick: () => {
+          console.log("Export");
+        },
+      },
+    ],
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/buttons-classic.png" alt="Basic Usage" />
+
+</ResponseField>
+
+<ResponseField name="exportPopUp" type="ATExportPopup[]">
+
+This is an object to configure the export pop-up of the table.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  buttons: {
+    exportPopUp: {
+      buttonLabel: "Export",
+      title: "Export Data",
+      description: "Export data to CSV",
+      onValidate: (filters) => {
+        console.log("Exporting data to CSV with filters : ", filters);
+      },
+      validateLabel: "Export Data",
+      filters: [
+        {
+          id: "status",
+          label: "Status",
+          options: [
+            {
+              label: "All",
+              value: "",
+            },
+            {
+              label: "Validated",
+              value: "validated",
+            },
+            {
+              label: "Rejected",
+              value: "rejected",
+            },
+          ],
+        },
+      ],
+    },
+  },
+};
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/buttons-popup-button.png" alt="Basic Usage" />
+<img className="rounded-xl" src="/images/buttons-popup.png" alt="Basic Usage" />
+
+</ResponseField>
+
+#### Handling right-click
+
+You can handle right click on rows with the `contextMenu` record.
+The contextMenu record can contains multiple fields :
+
+<ResponseField name="items" type="ATContextMenuItem[]">
+
+This is an array with items to display in the context menu
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  contextMenu: {
+    items: [
+      {
+        label: "Copier le nom",
+        onClick(row) {
+          navigator.clipboard.writeText(row.name);
+        },
+        icon: CopyPlus,
+      }
+    ]
+  }
+};
+```
+
+This will render contextMenu when right-clicking a row
+
+Render : 
+
+<img className="rounded-xl" src="/images/context-menu.png" alt="Context Menu" />
+
+</ResponseField>
+
+<ResponseField name="dots" type="boolean">
+
+This is a boolean that shows 3 dots at row ending
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  contextMenu: {
+    dots: true,
+    items: [
+      {
+        label: "Copier le nom",
+        onClick(row) {
+          navigator.clipboard.writeText(row.name);
+        },
+        icon: CopyPlus,
+      }
+    ]
+  }
+};
+```
+
+This will render 3 dots at row ending
+
+Render : 
+
+<img className="rounded-xl" src="/images/context-dots.png" alt="Context Menu" />
+
+</ResponseField>
+
+<ResponseField name="organizationConfig" type="ATOrganizationConfig">
+
+This is an object to configure the organization management of the table.
+
+It accepts the state of `activeOrganization`, his setter, and organizations list
+
+Example:
+
+```tsx
+
+	const organizations = [...]
+	const [activeOrganization, setActiveOrganization] = useState<string>();
+
+  const config: ATConfig<DataType> = {
+    organizationManagement: true,
+      organizationConfig: {
+        organizations: organizations,
+        activeOrganization: activeOrganization,
+        setOrganization: setActiveOrganization,
+      }
+  };
+```
+
+Render :
+
+<img className="rounded-xl" src="/images/organization.png" alt="Basic Usage" />
+
+</ResponseField>
+
+
+#### Handling organization
+
+You can handle the organization choice of the table by passing a `organizationManagement` booleaan to true into the `config` object.
+
+<ResponseField name="organizationManagement" type="boolean">
+
+This will enable a search and select input to choose the organization of the table.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  organizationManagement: true,
+};
+```
+
+This will automatically require the `organizationConfig` object to be passed to the config object.
+
+</ResponseField>
+
+#### Handling selection
+
+You can handle selection by adding a `selection` record to the config object. It can takes the following properties:
+
+<ResponseField name="selectionType" type='"single" | "multiple" | "none"'>
+
+Defaults to `none`
+
+This will enable a checkbox at the beginning of each row to select rows.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  selection: {
+    selectionType: "multiple",
+  },
+};
+```
+Render : 
+
+<img className="rounded-xl" src="/images/selection.png" alt="Context Menu" />
+
+</ResponseField>
+
+<ResponseField name="onSelectionChange" type='({ selection }) => void'>
+
+This is a function that will be called when the selection changes.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  selection: {
+    onSelectionChange: ({ selection }) => console.log(selection)
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="resetOnDataChange" type='boolean'>
+
+Defaults to `false`
+
+If set to `true`, the selection will be reset when the data changes.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  selection: {
+    resetOnDataChange: true,
+  },
+};
+```
+</ResponseField>
+
+#### Handling some other cases
+
+You can handle some other cases by adding a `metaData` record to the config object. It can takes the following properties:
+
+<ResponseField name="disabledFn" type='({ filters, row }) => boolean'>
+
+This is a function that will be called to determine if a row is disabled.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="isDisabledDots" type='boolean'>
+
+Defaults to `false`
+
+This is a boolean that indicates if 3 dots must be displayed at the end of each disabled row.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+    isDisabledDots: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="isDisabledRightClickable" type='boolean'>
+
+Defaults to `false`
+
+This is a boolean that indicates if the context menu must be displayed when right-clicking a disabled row.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+    isDisabledRightClickable: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="isDisabledSelectable" type='boolean'>
+
+Defaults to `false`
+
+This is a boolean that indicates if a disabled row can be selected.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+    isDisabledSelectable: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="selectRowOnClick" type='boolean'>
+
+Defaults to `false`
+
+Only available when `selectionType` is set. This is a boolean that indicates if a row can be selected when clicking on it.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+    selectRowOnClick: true,
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="selectOnlyOneRowOnClick" type='boolean'>
+
+Defaults to `false`
+
+Only available when `selectRowOnClick` is set. This is a boolean that indicates if only one row can be selected when clicking on it.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    disabledFn: ({ row }) => row.status === "OUT",
+    selectRowOnClick: true,
+    selectOnlyOneRowOnClick: true, // Only one row can be selected when clicking on it, for multiple selection, you must aim the checkbox
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="searchBarPosition" type='"left" | "right"'>
+
+Defaults to `left`
+
+This is a string that indicates where the search bar should be displayed.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    searchBarPosition: "right",
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="searchBarClassName" type='string'>
+
+This is a string that indicates the className of the search bar.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    searchBarClassName: "w-full",
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="organizationSASClassName" type='string'>
+
+This is a string that indicates the className of the organization search-and-select component.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    organizationSASClassName: "w-full",
+  },
+};
+```
+</ResponseField>
+
+<ResponseField name="rowParent" type='ReactNode'>
+
+This is a component that will be displayed around each row.
+
+Example:
+
+```tsx
+const config: ATConfig<DataType> = {
+  metaData: {
+    rowParent: ({ children }) => <div className="flex items-center">{children}</div>,
+  },
+};
+```
+</ResponseField>
+
+Some other features will be available in future releases, stay tuned!
